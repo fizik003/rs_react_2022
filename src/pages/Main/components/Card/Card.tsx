@@ -23,7 +23,7 @@ export function Card({
       <img
         src={img}
         className="h-60 object-cover w-full group-hover:scale-105 duration-500 ease-in-out"
-        alt=""
+        alt="Card img"
       />
       <div className="border-2">
         <div className="p-2 text-gray-500 border-b-2">
