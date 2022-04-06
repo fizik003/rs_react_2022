@@ -17,6 +17,7 @@ export function SearchInput({
       <div className="bg-white flex w-full">
         <input
           type="text"
+          placeholder="search value"
           className="h-10 px-2 outline-none w-full"
           value={searchValue}
           onChange={changeValueHandler}
