@@ -22,6 +22,9 @@ export default class Header extends Component<IHeader> {
             <li>
               <Link to="/aboutus">About Us</Link>
             </li>
+            <li>
+              <Link to="/form">Form</Link>
+            </li>
           </ul>
         </div>
       </header>
