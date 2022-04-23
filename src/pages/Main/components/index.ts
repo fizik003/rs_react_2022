@@ -1,3 +1,3 @@
 export { SearchInput } from "./SearchInput/SearchInput";
-export { Card } from "./Card/Card";
+export { PersoneCard } from "./PersoneCard/PersoneCard";
 export { CardsList } from "./CardsList/CardsList";

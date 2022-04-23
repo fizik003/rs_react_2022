@@ -1,35 +1,23 @@
-import { ICard } from "interfaces";
+import { Persone } from "interfaces";
 import React from "react";
-import { Card } from "..";
+import { PersoneCard } from "..";
 
 interface ICardListProps {
-  cards: ICard[];
+  items: Persone[];
 }
 
-export function CardsList({ cards }: ICardListProps) {
+export function CardsList({ items }: ICardListProps) {
   return (
     <div className=" py-2 grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
-      {cards.map(
-        ({
-          title,
-          img,
-          createdAt,
-          createdBy,
-          amountLikes,
-          amountViews,
-          id,
-        }) => (
-          <Card
-            title={title}
-            img={img}
-            amountLikes={amountLikes}
-            amountViews={amountViews}
-            createdAt={createdAt}
-            createdBy={createdBy}
-            key={id}
-          />
-        )
-      )}
+      {items.map(({ image, name, id, gender, status }) => (
+        <PersoneCard
+          name={name}
+          img={image}
+          status={status}
+          gender={gender}
+          key={id}
+        />
+      ))}
     </div>
   );
 }
