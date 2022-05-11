@@ -10,8 +10,13 @@ class MortiService {
   private api = "https://rickandmortyapi.com/api/";
 
   getCharacters = async () => {
-    const resource = `${this.api}character`;
-    return axios.get<CharacterResponseInterface>(resource);
+    const link = `${this.api}character`;
+    return axios.get<CharacterResponseInterface>(link);
+  };
+
+  getCharactersByValue = async (searchValue: string) => {
+    const link = `${this.api}character/?name=${searchValue}`;
+    return axios.get<CharacterResponseInterface>(link);
   };
 }
 

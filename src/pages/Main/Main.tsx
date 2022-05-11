@@ -26,12 +26,6 @@ export default class Main extends Component<unknown, IMainState> {
   }
 
   async componentDidMount() {
-    if (localStorage.getItem("searchValue")) {
-      this.setState({
-        searchValue: localStorage.getItem("searchValue") as string,
-      });
-    }
-
     const persones = (await mortiService.getCharacters()).data.results;
 
     setTimeout(() => {
@@ -40,11 +34,6 @@ export default class Main extends Component<unknown, IMainState> {
         loading: false,
       });
     }, 1000);
-  }
-
-  componentWillUnmount() {
-    const { searchValue } = this.state;
-    localStorage.setItem("searchValue", searchValue);
   }
 
   changeValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +53,16 @@ export default class Main extends Component<unknown, IMainState> {
     });
   };
 
+  searchHandler = async (searchValue: string) => {
+    this.setState({ loading: true });
+    const characters = await (
+      await mortiService.getCharactersByValue(searchValue)
+    ).data.results;
+    setTimeout(() => {
+      this.setState({ loading: false, persones: characters });
+    }, 1000);
+  };
+
   render() {
     const {
       persones,
@@ -81,6 +80,7 @@ export default class Main extends Component<unknown, IMainState> {
                 searchValue={searchValue}
                 changeValueHandler={this.changeValueHandler}
                 className="w-1/2 border-2 p-2 bg-white rounded-full"
+                onSearch={() => this.searchHandler(searchValue)}
               />
             </div>
             <div>
