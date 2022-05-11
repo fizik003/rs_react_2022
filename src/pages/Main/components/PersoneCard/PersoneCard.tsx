@@ -6,11 +6,24 @@ export interface PersoneCardProps {
   name: string;
   gender: string;
   status: string;
+  cardClick(): void;
 }
 
-export function PersoneCard({ status, gender, img, name }: PersoneCardProps) {
+export function PersoneCard({
+  status,
+  gender,
+  img,
+  name,
+  cardClick,
+}: PersoneCardProps) {
   return (
-    <div className="max-w-lg font-sans shadow-lg group overflow-hidden w-full cursor-pointer">
+    <div
+      className="max-w-lg font-sans shadow-lg group overflow-hidden w-full cursor-pointer"
+      onClick={cardClick}
+      onKeyDown={cardClick}
+      role="button"
+      tabIndex={0}
+    >
       <img
         src={img}
         className="h-60 object-cover w-full group-hover:scale-105 duration-500 ease-in-out"

@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Component, Props } from "react";
-import { cardsMock } from "mocks";
+import React, { Component } from "react";
 import { mortiService } from "sevices";
-import { Info, Persone } from "interfaces";
+import { Persone } from "interfaces";
 import { Spinner } from "components";
 import Layout from "../../components/Layout/Layout";
-import { SearchInput, CardsList } from "./components";
+import { SearchInput, CardsList, PersoneDetailDialog } from "./components";
 
 interface IMainState {
   searchValue: string;
   persones: Persone[];
   loading: boolean;
+  isDetailDialogOpen: boolean;
+  selectedCaracters: number;
 }
 
 export default class Main extends Component<unknown, IMainState> {
@@ -20,6 +20,8 @@ export default class Main extends Component<unknown, IMainState> {
       searchValue: "",
       persones: [],
       loading: true,
+      isDetailDialogOpen: false,
+      selectedCaracters: 0,
     };
   }
 
@@ -31,7 +33,6 @@ export default class Main extends Component<unknown, IMainState> {
     }
 
     const persones = (await mortiService.getCharacters()).data.results;
-    console.log(persones[0]);
 
     setTimeout(() => {
       this.setState({
@@ -50,26 +51,58 @@ export default class Main extends Component<unknown, IMainState> {
     this.setState({ searchValue: e.currentTarget.value });
   };
 
+  clickCardHandler = (id: number) => {
+    this.setState({
+      selectedCaracters: id,
+      isDetailDialogOpen: true,
+    });
+  };
+
+  closeDetailDialog = () => {
+    this.setState({
+      isDetailDialogOpen: false,
+    });
+  };
+
   render() {
-    const { persones, searchValue, loading } = this.state;
+    const {
+      persones,
+      searchValue,
+      loading,
+      isDetailDialogOpen,
+      selectedCaracters,
+    } = this.state;
     return (
-      <Layout currentPage="Main">
-        <div className="container mx-auto p-4 bg-gray-50 min-h-screen">
-          <div className="flex  justify-center mb-4 ">
-            <SearchInput
-              searchValue={searchValue}
-              changeValueHandler={this.changeValueHandler}
-              className="w-1/2 border-2 p-2 bg-white rounded-full"
-            />
+      <>
+        <Layout currentPage="Main">
+          <div className="container mx-auto p-4 bg-gray-50 min-h-screen">
+            <div className="flex  justify-center mb-4 ">
+              <SearchInput
+                searchValue={searchValue}
+                changeValueHandler={this.changeValueHandler}
+                className="w-1/2 border-2 p-2 bg-white rounded-full"
+              />
+            </div>
+            <div>
+              {loading && (
+                <Spinner className="flex justify-center items-center h-96" />
+              )}
+              {!loading && (
+                <CardsList
+                  items={persones}
+                  onCardClick={this.clickCardHandler}
+                />
+              )}
+            </div>
           </div>
-          <div>
-            {loading && (
-              <Spinner className="flex justify-center items-center h-96" />
-            )}
-            {!loading && <CardsList items={persones} />}
-          </div>
-        </div>
-      </Layout>
+        </Layout>
+        {isDetailDialogOpen && (
+          <PersoneDetailDialog
+            persone={persones[selectedCaracters]}
+            onClose={this.closeDetailDialog}
+          />
+        )}
+      </>
     );
   }
 }
